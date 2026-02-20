@@ -1,0 +1,37 @@
+import math
+from collections import Counter
+
+# Dataset
+dataset = [
+    {"Fever":"High","Cough":"Yes","Fatigue":"Yes","Age":"Old","Disease":"Yes"},
+    {"Fever":"High","Cough":"Yes","Fatigue":"No","Age":"Young","Disease":"Yes"},
+    {"Fever":"Normal","Cough":"Yes","Fatigue":"Yes","Age":"Old","Disease":"Yes"},
+    {"Fever":"Low","Cough":"No","Fatigue":"No","Age":"Young","Disease":"No"}
+]
+
+def entropy(data):
+    total = len(data)
+    count = Counter(row["Disease"] for row in data)
+    return -sum((c/total)*math.log2(c/total) for c in count.values())
+
+def information_gain(data, attribute):
+    total_entropy = entropy(data)
+    values = set(row[attribute] for row in data)
+    weighted_entropy = 0
+    for v in values:
+        subset = [row for row in data if row[attribute]==v]
+        weighted_entropy += len(subset)/len(data) * entropy(subset)
+    return total_entropy - weighted_entropy
+
+# Compute IG for all attributes
+attributes = ["Fever","Cough","Fatigue","Age"]
+gains = {attr: information_gain(dataset, attr) for attr in attributes}
+root = max(gains, key=gains.get)
+
+print("Information Gain:", gains)
+print("Root Node:", root)
+
+
+OUTPUT:
+Information Gain: {'Fever': 0.8112781244591328, 'Cough': 0.8112781244591328, 'Fatigue': 0.31127812445913283, 'Age': 0.31127812445913283}
+Root Node: Fever

@@ -1,0 +1,71 @@
+def candidate_elimination(data):
+    # Number of attributes
+    n_attr = len(data[0]) - 1
+    
+    # Initialize S and G
+    S = ['Ø'] * n_attr
+    G = [['?'] * n_attr]
+
+    for row in data:
+        attributes = row[:-1]
+        label = row[-1]
+
+        # -------- POSITIVE EXAMPLE --------
+        if label == "Yes":
+            # Update S
+            for i in range(n_attr):
+                if S[i] == 'Ø':
+                    S[i] = attributes[i]
+                elif S[i] != attributes[i]:
+                    S[i] = '?'
+
+            # Remove inconsistent hypotheses from G
+            G = [g for g in G if all(
+                g[i] == '?' or g[i] == attributes[i]
+                for i in range(n_attr)
+            )]
+
+        # -------- NEGATIVE EXAMPLE --------
+        else:
+            new_G = []
+            for g in G:
+                # If G covers negative example, specialize it
+                if all(g[i] == '?' or g[i] == attributes[i]
+                       for i in range(n_attr)):
+
+                    for i in range(n_attr):
+                        if g[i] == '?':
+                            if S[i] != attributes[i]:
+                                new_h = g.copy()
+                                new_h[i] = S[i]
+                                new_G.append(new_h)
+                else:
+                    new_G.append(g)
+
+            G = new_G
+
+    return S, G
+
+
+# -------------------------------
+# Training Data (Medical Example)
+# -------------------------------
+training_data = [
+    ['High', 'Yes', 'Yes', 'Yes'],
+    ['High', 'Yes', 'No', 'Yes'],
+    ['Normal', 'Yes', 'Yes', 'No'],
+    ['High', 'No', 'Yes', 'Yes']
+]
+
+S_final, G_final = candidate_elimination(training_data)
+
+print("Most Specific Hypothesis (S):", S_final)
+print("Most General Hypothesis (G):", G_final)
+
+
+
+
+
+OUTPUT:
+Most Specific Hypothesis (S): ['High', '?', '?']
+Most General Hypothesis (G): [['High', '?', '?']
