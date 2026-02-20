@@ -1,0 +1,81 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMLWRV5+gLLcWr0A1U8o3bV",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/deepan98130-hub/MACHINE-LEARNING-LAB-EXPERIMENTS/blob/main/USECASE6\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7n0kd2w8iOPA",
+        "outputId": "aa539dc8-a89b-4921-bda7-3f2d5eb08c46"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Estimated theta_A: 0.797\n",
+            "Estimated theta_B: 0.52\n"
+          ]
+        }
+      ],
+      "source": [
+        "import numpy as np\n",
+        "from scipy.stats import binom\n",
+        "\n",
+        "# Observed data (heads out of 10 tosses)\n",
+        "data = np.array([5, 9, 8, 4, 7])\n",
+        "n = 10  # tosses per trial\n",
+        "\n",
+        "# Initial guesses\n",
+        "theta_A = 0.6\n",
+        "theta_B = 0.5\n",
+        "\n",
+        "iterations = 10\n",
+        "\n",
+        "for i in range(iterations):\n",
+        "\n",
+        "    # E-Step: compute responsibilities\n",
+        "    prob_A = binom.pmf(data, n, theta_A)\n",
+        "    prob_B = binom.pmf(data, n, theta_B)\n",
+        "\n",
+        "    weight_A = prob_A / (prob_A + prob_B)\n",
+        "    weight_B = prob_B / (prob_A + prob_B)\n",
+        "\n",
+        "    # M-Step: update parameters\n",
+        "    theta_A = np.sum(weight_A * data) / (np.sum(weight_A) * n)\n",
+        "    theta_B = np.sum(weight_B * data) / (np.sum(weight_B) * n)\n",
+        "\n",
+        "print(\"Estimated theta_A:\", round(theta_A, 3))\n",
+        "print(\"Estimated theta_B:\", round(theta_B, 3))"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMeFSZrEBaW3MKbT9wXS72j",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/deepan98130-hub/MACHINE-LEARNING-LAB-EXPERIMENTS/blob/main/USECASE4\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 4,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ZM9WlhlBga-k",
+        "outputId": "5b001fa1-a14c-4fcd-8f6b-1bd130233534"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Prediction (1=Spam, 0=Not Spam): 1\n"
+          ]
+        },
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": [
+            "/usr/local/lib/python3.12/dist-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but GaussianNB was fitted with feature names\n",
+            "  warnings.warn(\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Experiment 4: Gaussian Naive Bayes - Email Spam Classification\n",
+        "\n",
+        "import pandas as pd\n",
+        "from sklearn.naive_bayes import GaussianNB\n",
+        "from sklearn.preprocessing import LabelEncoder\n",
+        "\n",
+        "# Create dataset\n",
+        "data = {\n",
+        "    'Free':  ['Yes','Yes','No','No','No','Yes'],\n",
+        "    'Win':   ['Yes','No','Yes','No','No','No'],\n",
+        "    'Offer': ['Yes','Yes','No','Yes','No','No'],\n",
+        "    'Spam':  ['Yes','Yes','Yes','No','No','No']\n",
+        "}\n",
+        "\n",
+        "df = pd.DataFrame(data)\n",
+        "\n",
+        "# Convert Yes/No to 1/0\n",
+        "le = LabelEncoder()\n",
+        "for column in df.columns:\n",
+        "    df[column] = le.fit_transform(df[column])\n",
+        "\n",
+        "# Split features and target\n",
+        "X = df[['Free','Win','Offer']]\n",
+        "y = df['Spam']\n",
+        "\n",
+        "# Train Model\n",
+        "model = GaussianNB()\n",
+        "model.fit(X, y)\n",
+        "\n",
+        "# Example Prediction\n",
+        "# New Email: Free=Yes, Win=Yes, Offer=No\n",
+        "test = [[1,1,0]]\n",
+        "prediction = model.predict(test)\n",
+        "\n",
+        "print(\"Prediction (1=Spam, 0=Not Spam):\", prediction[0])"
+      ]
+    }
+  ]
+}

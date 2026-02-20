@@ -1,0 +1,73 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNhEPWSYYK/niOepWuuUnna",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/deepan98130-hub/MACHINE-LEARNING-LAB-EXPERIMENTS/blob/main/USECASE5\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 1,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "hgBtbqSwlykH",
+        "outputId": "52e160ec-0a68-494f-ff5d-dbd5238028de"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Probability Pass=Yes: 0.375\n",
+            "Probability Pass=No: 0.0\n",
+            "Prediction: Pass = Yes\n"
+          ]
+        }
+      ],
+      "source": [
+        "# Bayesian Network - Student Performance\n",
+        "\n",
+        "P_pass = 4/6\n",
+        "P_notpass = 2/6\n",
+        "\n",
+        "P_high_given_pass = 3/4\n",
+        "P_high_given_notpass = 0/2\n",
+        "\n",
+        "# For StudyHours=High, Attendance=High\n",
+        "prob_yes = P_pass * P_high_given_pass * P_high_given_pass\n",
+        "prob_no = P_notpass * P_high_given_notpass * P_high_given_notpass\n",
+        "\n",
+        "print(\"Probability Pass=Yes:\", round(prob_yes,3))\n",
+        "print(\"Probability Pass=No:\", round(prob_no,3))\n",
+        "\n",
+        "if prob_yes > prob_no:\n",
+        "    print(\"Prediction: Pass = Yes\")\n",
+        "else:\n",
+        "    print(\"Prediction: Pass = No\")"
+      ]
+    }
+  ]
+}
