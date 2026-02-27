@@ -1,0 +1,33 @@
+import numpy as np
+
+# Observed data: number of heads in 10 tosses (5 trials)
+data = np.array([5, 9, 8, 4, 7])
+n = 10  # tosses per trial
+
+# Initialize parameters
+theta_A = 0.6
+theta_B = 0.5
+pi = 0.5  # mixing probability for coin A
+
+def binomial_prob(k, n, theta):
+    return (theta**k) * ((1-theta)**(n-k))
+
+# EM algorithm
+for iteration in range(20):
+    # E-step: compute responsibilities
+    gamma = []
+    for k in data:
+        pA = pi * binomial_prob(k, n, theta_A)
+        pB = (1-pi) * binomial_prob(k, n, theta_B)
+        gamma.append(pA / (pA + pB))
+    gamma = np.array(gamma)
+
+    # M-step: update parameters
+    theta_A = np.sum(gamma * data) / (n * np.sum(gamma))
+    theta_B = np.sum((1-gamma) * data) / (n * np.sum(1-gamma))
+    pi = np.mean(gamma)
+
+# Final estimates
+print("Estimated theta_A:", round(theta_A, 4))
+print("Estimated theta_B:", round(theta_B, 4))
+print("Estimated pi:", round(pi, 4))
